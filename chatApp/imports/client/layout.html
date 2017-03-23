@@ -1,0 +1,72 @@
+<head>
+  <title>Live Chat App Tutorial</title>
+</head>
+
+
+<body>
+  <h1>Live Chat App - Host.</h1>
+  {{> main}}
+  {{> appItem}}
+  {{> chatItem}}
+  {{> chatBox}}
+  {{> chatBoxMessageItem}}
+</body>
+
+
+<template name="main">
+  <input type="text" name="client-app-name" placeholder="App name...">
+  <button type="button" class="js-add-new-client-app">Add new client app</button>
+  <hr>
+  <h3>Your client apps:</h3>
+  {{#each app in clientApps}}
+    <div>
+      {{> appItem name=app.name id=app._id}}
+    </div>
+  {{/each}}
+  <hr>
+  <h3>Your chats in chosen app:</h3>
+  {{#each userSessionId in clientAppsChatsSessions}}
+    <div>
+      {{> chatItem userSessionId=userSessionId}}
+    </div>
+  {{/each}}
+  {{#if chatBoxOpened}}
+    {{> chatBox}}
+  {{/if}}
+</template>
+
+
+<template name="appItem">
+  <a href="#" class="js-open-chats">
+    <strong>Name</strong> {{name}} | <span><strong>Id:</strong> {{id}}</span>
+  </a>
+</template>
+
+
+<template name="chatItem">
+  <a href="#" class="js-open-chat-messages">
+    <strong>SessionID</strong>: {{userSessionId}}
+  </a>
+</template>
+
+
+<template name="chatBox">
+  <div class="live-chat-box js-chat-box" id="chat-box-{{userSessionId}}">
+    <div class="live-chat-box-header">
+      <div class="live-chat-header-title">id: {{userSessionId}}</div>
+    </div>
+    <div class="live-chat-messages">
+      {{#each message in messages}}
+        {{> chatBoxMessageItem message=message.msg}}
+      {{/each}}
+    </div>
+    <textarea class="live-chat-submit-input js-chat-submit-input" rows="1" placeholder="Send a message..."></textarea>
+  </div>
+</template>
+
+
+<template name="chatBoxMessageItem">
+  <div class="live-chat-message-item">
+    <div class="message">{{message}}</div>
+  </div>
+</template>
