@@ -5,11 +5,12 @@
 
 <body>
   <h1>Live Chat App - Host.</h1>
+<h2 id="here-plz">hu</h2>
   {{> main}}
-  {{> appItem}}
-  {{> chatItem}}
-  {{> chatBox}}
-  {{> chatBoxMessageItem}}
+  <!-- {{> appItem}} -->
+  <!-- {{> chatItem}} -->
+  <!-- {{> chatBox}} -->
+  <!-- {{> chatBoxMessageItem}} -->
 </body>
 
 
@@ -17,10 +18,13 @@
   <input type="text" name="client-app-name" placeholder="App name...">
   <button type="button" class="js-add-new-client-app">Add new client app</button>
   <hr>
-  <h3>Your client apps:</h3>
-  {{#each app in clientApps}}
+  {{#each name in clientApps}}
+  <p>{{name}}</p>
+  {{/each}}
+ <!--  <h3>Your client apps:</h3>
+  {{#each name in clientApps}}
     <div>
-      {{> appItem name=app.name id=app._id}}
+      {{> appItem name=name}}
     </div>
   {{/each}}
   <hr>
@@ -32,7 +36,7 @@
   {{/each}}
   {{#if chatBoxOpened}}
     {{> chatBox}}
-  {{/if}}
+  {{/if}} -->
 </template>
 
 

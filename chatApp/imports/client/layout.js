@@ -1,8 +1,18 @@
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { $ } from 'meteor/jquery';
-import { Chat, Client } from '../both/collections.js';
+import { Chat, Client} from '../both/collections.js';
+var db = require('mysql');
 
+var chatRoom = new Meteor.Streamer('chats', {retransmitToSelf: true});
+
+var connectingToMysql = {
+  host: 'localhost',
+  user: 'root',
+  password: 'ThisTime',
+  database: 'wrevelchat'
+};
+ const mysqldb = db.createPool(connectingToMysql);
 // this is just for demo (and article) purposes
 // you can check out production ready app here: https://github.com/juliancwirko/s-chat-app
 
@@ -18,7 +28,7 @@ state.setDefault({
     openedChat: '',
     openedApp: ''
 });
-
+console.log("in layout");
 // Main template
 // We need to subscribe to the data - here client apps and particular chats in the context of the chosen app
 Template.main.onRendered(function () {
@@ -27,6 +37,7 @@ Template.main.onRendered(function () {
     instance.autorun(() => {
         instance.subscribe('Chat.list', state.get('openedApp'));
     });
+chatRoom.emit('name', {name: 'slslslslslsl'});
 });
 // We configure 'add-new-app' onClick event here
 Template.main.events({
@@ -34,15 +45,36 @@ Template.main.events({
         const instance = Template.instance();
         const name = instance.$('[name=client-app-name]').val();
         if (name) {
+
             Meteor.call('addClientApp', name);
             instance.$('[name=client-app-name]').val('');
         }
+
     }
+
 });
+
 // We prepare data helpers in the main template
 Template.main.helpers({
+
     clientApps() {
-        return Client.find();
+var name;
+
+chatRoom.on('name', function(name){
+              console.log("live on")
+              instance.$('#here-plz').val('ffff');
+            })
+
+
+
+
+        // return Client.find();
+     //    console.log(Session.set('server'));
+     // return Session.set('server');
+
+     //     // console.log('hey '+Meteor.call('getAll'));
+     //     console.log('hey ' + name);
+     //     return name;
     },
     clientAppsChatsSessions() {
         var sss = Chat.find({clientAppId: state.get('openedApp')})
